@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Virality Studio",
+  "description": "An AI-powered social media command center for niche analysis, trend detection, and multi-platform content generation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
