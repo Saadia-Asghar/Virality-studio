@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
 
-# Run and deploy your AI Studio app
+# TRENDING
 
-This contains everything you need to run your app locally.
+### The Elite Attention Capture Platform (v2.5 Neural Engine)
 
-View your app in AI Studio: https://ai.studio/apps/drive/1Oc0dcBBhPVkEPOGJ11ulDA9OQODFFj-5
+Trending is a high-fidelity command center designed for the modern attention economy. It leverages **Gemini 2.0 Flash** to intercept viral signals, adapt conceptual seeds across social nodes, and audit content distribution with clinical precision.
 
-## Run Locally
+## 🚀 Core Infrastructure
 
-**Prerequisites:**  Node.js
+- **Neural Seed Workflow**: One idea, infinite adaptations for Instagram, TikTok, and LinkedIn.
+- **Audience Radar**: Real-time competitor scanning and content gap forensics.
+- **Trends Explorer**: Signal interception for breakout audio and emergent topics.
+- **Post Reviewer**: AI-driven viral score auditing before deployment.
+- **Ecosystem Analytics**: Macro-scale audience dynamics and conversion tracking.
 
+## 🛠️ Deployment Protocol
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1. **Neural Link**: Connect your Gemini API key in System Configuration.
+2. **Platform Authorization**: Establish secure links via Deployment Ports (Instagram, TikTok, etc.).
+3. **Activation**: Seed the engine with mock engagement data or begin real-time scanning.
+
+## 🧬 Neural Architecture
+
+Built with:
+- **React 19 + TypeScript**: Solid, scalable frontend.
+- **Tailwind CSS**: Premium, dark-mode-first aesthetic.
+- **Firebase Auth & Firestore**: Persistent neural identities and global state sync.
+- **Google Gemini API**: Industrial-grade LLM for content synthesis.
+- **Lucide + Recharts**: High-fidelity visual telemetry.
+
+## ⚖️ License
+Enterprise Protocol - All Systems Operational.
+© 2026 ARCHIVE-0.
