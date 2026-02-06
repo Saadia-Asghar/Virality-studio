@@ -9,36 +9,52 @@ import TrendsExplorer from './components/TrendsExplorer';
 import Settings from './components/Settings';
 import Landing from './components/Landing';
 import ExtensionReview from './components/ExtensionReview';
+import AnalyticsHub from './components/AnalyticsHub';
+import TeamCommand from './components/TeamCommand';
+import CompetitorRadar from './components/CompetitorRadar';
+import GuideModal from './components/GuideModal';
+import { Sparkles, Terminal, Info } from 'lucide-react';
+import { useAuth } from './contexts/AuthContext';
 
 const App: React.FC = () => {
-  const [isStarted, setIsStarted] = useState(false);
+  const { user, loading: authLoading, userData } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [pendingIdea, setPendingIdea] = useState<string | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   useEffect(() => {
-    // Basic check for session or "onboarding completion"
-    const hasBeenStarted = localStorage.getItem('virality_started');
-    if (hasBeenStarted) setIsStarted(true);
-  }, []);
-
-  const handleStart = () => {
-    localStorage.setItem('virality_started', 'true');
-    setIsStarted(true);
-  };
+    // Show guide automatically for new users
+    const hasSeenGuide = localStorage.getItem('virality_guide_seen');
+    if (user && !hasSeenGuide) {
+      setIsGuideOpen(true);
+      localStorage.setItem('virality_guide_seen', 'true');
+    }
+  }, [user]);
 
   const handleSelectIdea = (idea: string) => {
     setPendingIdea(idea);
     setActiveTab('content');
   };
 
-  if (!isStarted) {
-    return <Landing onStart={handleStart} />;
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">Neural Link Initializing...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Landing onStart={() => setActiveTab('dashboard')} />;
   }
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard onSelectIdea={handleSelectIdea} />;
+        return <Dashboard onSelectIdea={handleSelectIdea} setActiveTab={setActiveTab} />;
       case 'content':
         return <ContentGenerator initialIdea={pendingIdea || ''} />;
       case 'review':
@@ -46,79 +62,66 @@ const App: React.FC = () => {
       case 'studio':
         return <ImageStudio />;
       case 'trends':
-        return <TrendsExplorer />;
+        return <TrendsExplorer onSelectIdea={handleSelectIdea} />;
+      case 'radar':
+        return <CompetitorRadar />;
       case 'settings':
         return <Settings />;
       case 'analytics':
-        return (
-          <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in slide-in-from-bottom-4">
-            <div className="w-24 h-24 bg-indigo-50 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm">📈</div>
-            <h2 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">Analytics Hub</h2>
-            <p className="text-gray-500 max-w-md">Syncing with Meta & TikTok API. Deep engagement insights will appear here shortly.</p>
-            <button className="mt-8 bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-100" onClick={() => setActiveTab('settings')}>Connect Accounts</button>
-          </div>
-        );
+        return <AnalyticsHub />;
       case 'team':
-        return (
-          <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in slide-in-from-bottom-4">
-            <div className="w-24 h-24 bg-blue-50 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm">👥</div>
-            <h2 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">Team Command</h2>
-            <p className="text-gray-500 max-w-md italic">"Collaborative viral growth happens here."</p>
-            <div className="mt-8 bg-white border border-gray-100 rounded-[2rem] p-8 shadow-xl max-w-sm w-full">
-               <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-50">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">JD</div>
-                    <div className="text-left">
-                      <p className="text-sm font-black text-gray-900">John Doe</p>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Admin</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] bg-green-50 text-green-600 px-2.5 py-1 rounded-full font-black tracking-widest">ONLINE</span>
-               </div>
-               <button className="w-full py-3 bg-gray-50 text-gray-400 text-xs font-bold rounded-xl border-2 border-dashed border-gray-200">
-                 + Add Team Member
-               </button>
-            </div>
-          </div>
-        );
+        return <TeamCommand />;
       default:
-        return <Dashboard onSelectIdea={handleSelectIdea} />;
+        return <Dashboard onSelectIdea={handleSelectIdea} setActiveTab={setActiveTab} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white font-sans selection:bg-indigo-50 selection:text-indigo-600">
       <Header />
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="ml-64 pt-24 px-10 pb-16 transition-all duration-300">
+      <main className="ml-72 pt-28 px-12 pb-20 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div className="mb-14 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-wrap break-all">
             <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse"></span>
-                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em]">Active Session</p>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-indigo-600/10 p-1.5 rounded-lg border border-indigo-600/20">
+                  <Terminal size={14} className="text-indigo-600" />
+                </div>
+                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.3em]">
+                  {userData?.email ? `Node: ${userData.email}` : 'Encrypted Session'}
+                </p>
               </div>
-              <h1 className="text-4xl font-black text-gray-900 capitalize tracking-tighter">{activeTab.replace('-', ' ')}</h1>
+              <h1 className="text-5xl font-black text-gray-900 tracking-tighter uppercase">{activeTab.replace('-', ' ')}</h1>
             </div>
             <div className="flex items-center space-x-4">
-               {activeTab !== 'content' && (
-                 <button 
+              <button
+                onClick={() => setIsGuideOpen(true)}
+                className="p-4 bg-gray-50 text-gray-400 hover:text-indigo-600 rounded-2xl transition-all group"
+                title="Protocol Guide"
+              >
+                <Info size={20} className="group-hover:scale-110 transition-transform" />
+              </button>
+              {activeTab !== 'content' && (
+                <button
                   onClick={() => {
                     setPendingIdea(null);
                     setActiveTab('content');
                   }}
-                  className="bg-gray-900 text-white px-8 py-3 rounded-2xl text-sm font-black shadow-2xl hover:bg-black transition-all transform hover:-translate-y-1 active:scale-95"
-                 >
-                   Quick Draft
-                 </button>
-               )}
+                  className="bg-gray-900 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-gray-200 hover:bg-indigo-600 hover:-translate-y-1 transition-all flex items-center gap-3 active:scale-95"
+                >
+                  <Sparkles size={16} />
+                  Rapid Protocol
+                </button>
+              )}
             </div>
           </div>
-          <div className="animate-in fade-in duration-700">
+          <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
             {renderContent()}
           </div>
         </div>
       </main>
+      <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
     </div>
   );
 };
