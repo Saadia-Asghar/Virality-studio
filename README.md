@@ -30,6 +30,27 @@ Trending currently supports optimized signal synthesis for:
 
 ## 🛠️ Deployment Protocol
 
+### Quick Setup (3 Steps)
+
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure Environment**
+   - Copy `.env.example` to `.env`
+   - Add your Firebase configuration from [Firebase Console](https://console.firebase.google.com)
+   - Add your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+
+3. **Launch**
+   ```bash
+   npm run dev
+   ```
+
+📖 **Detailed Instructions**: See [`QUICK_START.md`](./QUICK_START.md) or [`SETUP_GUIDE.md`](./SETUP_GUIDE.md)
+
+### Platform Integration
+
 1. **Neural Link**: Connect your Gemini API key in System Configuration.
 2. **Platform Authorization**: Establish secure links via Deployment Ports (Instagram, TikTok, etc.).
 3. **Activation**: Seed the engine with mock engagement data or begin real-time scanning.

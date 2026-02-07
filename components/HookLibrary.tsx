@@ -12,7 +12,8 @@ import {
     Box,
     Target,
     Filter,
-    ArrowUpRight
+    ArrowUpRight,
+    Plus
 } from 'lucide-react';
 
 const HookLibrary: React.FC = () => {
