@@ -55,8 +55,8 @@ const QuickGenerator: React.FC = () => {
                                     <Sparkles className="w-4 h-4 text-indigo-400 animate-pulse" />
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300">Instant Demo</span>
                                 </div>
-                                <h3 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase italic">Test the Neural Engine</h3>
-                                <p className="text-white/40 text-lg font-medium italic">"Choose a platform, enter a topic, and watch AI create viral content instantly."</p>
+                                <h3 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase italic">Try It Free</h3>
+                                <p className="text-white/40 text-lg font-medium italic">"Pick a platform, type your idea, and watch AI write your post in seconds."</p>
                             </div>
 
                             <div className="relative z-10 max-w-3xl mx-auto">
@@ -67,8 +67,8 @@ const QuickGenerator: React.FC = () => {
                                             key={p.id}
                                             onClick={() => setSelectedPlatform(p.id)}
                                             className={`px-6 py-3 rounded-2xl flex items-center gap-3 transition-all border ${selectedPlatform === p.id
-                                                    ? 'bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]'
-                                                    : 'bg-white/5 text-white/40 border-white/5 hover:bg-white/10 hover:text-white'
+                                                ? 'bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                                                : 'bg-white/5 text-white/40 border-white/5 hover:bg-white/10 hover:text-white'
                                                 }`}
                                         >
                                             <p.icon size={16} />
@@ -124,7 +124,7 @@ const QuickGenerator: React.FC = () => {
                                         <div className="absolute top-4 right-4 p-2 bg-indigo-500/10 rounded-lg text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <Check size={14} />
                                         </div>
-                                        <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-4">Optimized Caption</p>
+                                        <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-4">Your Caption</p>
                                         <p className="text-sm font-bold text-white/80 leading-relaxed whitespace-pre-wrap italic">
                                             {result.caption}
                                         </p>
@@ -143,11 +143,11 @@ const QuickGenerator: React.FC = () => {
 
                                     <div className="relative z-10 space-y-6">
                                         <div>
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-2">High-Retention Hook</p>
+                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-2">Video Hook</p>
                                             <p className="text-2xl font-black text-white tracking-tight leading-none italic">"{result.video_script?.hook || result.title}"</p>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-2">AI Visual Prompt</p>
+                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-2">Image Idea</p>
                                             <p className="text-xs font-bold text-white/50 leading-relaxed font-mono bg-white/5 p-4 rounded-xl border border-white/5">
                                                 {result.visual_prompt || "No visual prompt generated for this format."}
                                             </p>
@@ -155,13 +155,13 @@ const QuickGenerator: React.FC = () => {
                                     </div>
 
                                     <div className="mt-8 pt-8 border-t border-white/10 text-center">
-                                        <p className="text-[12px] font-bold text-white/60 mb-4 italic">Want to post this? Unlock full access.</p>
+                                        <p className="text-[12px] font-bold text-white/60 mb-4 italic">Want to post this? Sign up for free.</p>
                                         <button
                                             onClick={signInWithGoogle}
                                             className="w-full py-4 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95"
                                         >
                                             <Lock size={14} />
-                                            Claim This Post & Sign Up
+                                            Sign Up & Use This
                                         </button>
                                     </div>
                                 </div>

@@ -73,13 +73,13 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
           </div>
 
           <h1 className="text-7xl md:text-[140px] font-black tracking-tighter leading-[0.85] mb-16 uppercase text-gradient-indigo italic">
-            Get <span className="text-white">Attention</span> <br />
-            Everywhere <br />
-            <span className="text-indigo-400">Instantly.</span>
+            Get More <br />
+            <span className="text-white">Views</span> <br />
+            <span className="text-indigo-400">Fast.</span>
           </h1>
 
           <p className="max-w-3xl mx-auto text-xl md:text-3xl text-white/40 mb-20 leading-relaxed font-medium italic">
-            "The simplest tool to grow your views. Find trends, make viral posts with AI, and grow on all social apps automatically."
+            "AI writes your posts. You pick the best ones. Post to all your social apps at once."
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -135,12 +135,12 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
             Step-by-Step Growth
             <div className="w-8 h-px bg-indigo-500/30"></div>
           </div>
-          <h2 className="text-5xl md:text-8xl font-black text-white mb-24 tracking-tighter uppercase italic leading-none">The <span className="text-indigo-600">Growth</span> Alpha</h2>
+          <h2 className="text-5xl md:text-8xl font-black text-white mb-24 tracking-tighter uppercase italic leading-none">How It <span className="text-indigo-600">Works</span></h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            <StepCard num="01" title="Find Trends" desc="We scan the web to find what is viral right now in your niche." icon={<Search size={40} />} color="bg-indigo-600" />
-            <StepCard num="02" title="AI Writing" desc="Our AI writes viral posts, scripts, and captions in seconds." icon={<Zap size={40} />} color="bg-purple-600" />
-            <StepCard num="03" title="Auto Post" desc="Scale your views across all social apps at the same time." icon={<Globe size={40} />} color="bg-emerald-600" />
+            <StepCard num="01" title="Find Trends" desc="We find what's going viral in your niche right now." icon={<Search size={40} />} color="bg-indigo-600" />
+            <StepCard num="02" title="AI Writes" desc="AI creates your posts, captions, and video scripts instantly." icon={<Zap size={40} />} color="bg-purple-600" />
+            <StepCard num="03" title="Post It" desc="Share to all your social apps with one click." icon={<Globe size={40} />} color="bg-emerald-600" />
           </div>
         </div>
       </section>
@@ -152,7 +152,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
             <div className="flex-1 text-center lg:text-left">
               <h2 className="text-6xl md:text-8xl font-black mb-12 tracking-tighter uppercase italic leading-[0.85]">For Anyone Who <br /> Wants <span className="text-indigo-400">Views.</span></h2>
               <p className="text-white/40 text-2xl font-medium leading-relaxed italic max-w-2xl mx-auto lg:mx-0">
-                "Stop guessing what to post. Use simple AI tools to create content people actually want to share."
+                "Stop guessing what to post. Let AI create content that people want to share."
               </p>
 
               <div className="mt-16 flex flex-wrap justify-center lg:justify-start gap-4">
