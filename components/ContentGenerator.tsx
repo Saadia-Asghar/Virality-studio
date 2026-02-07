@@ -15,7 +15,8 @@ import {
   Loader2,
   Terminal,
   Target,
-  Lock
+  Lock,
+  Youtube
 } from 'lucide-react';
 import { generatePostFromIdea } from '../services/geminiService';
 import { postToPlatform, schedulePost } from '../services/platformService';
