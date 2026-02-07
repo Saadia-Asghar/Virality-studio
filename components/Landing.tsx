@@ -99,23 +99,23 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         </div>
 
         {/* Dynamic Floaties - Deep Space feel */}
-        <div className="hidden xl:block absolute top-[40%] left-[8%] rotate-[-15deg] animate-float opacity-30">
-          <div className="cyber-card p-10 rounded-[3.5rem] bg-[#0c0c0e]/60 border-indigo-500/20 shadow-2xl backdrop-blur-3xl">
+        <div className="hidden xl:block absolute top-[40%] left-[8%] rotate-[-15deg] animate-float opacity-40">
+          <div className="cyber-card p-10 rounded-[3.5rem] bg-[#0c0c0e]/80 border-indigo-500/30 shadow-2xl backdrop-blur-3xl">
             <div className="flex items-center gap-6 mb-8 text-indigo-400">
               <TrendingUp size={32} />
               <p className="text-4xl font-black">+412%</p>
             </div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Growth Velocity Locked</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-white/60">Growth Locked</p>
           </div>
         </div>
 
-        <div className="hidden xl:block absolute top-[50%] right-[8%] rotate-[10deg] animate-float opacity-30" style={{ animationDelay: '1.5s' }}>
-          <div className="cyber-card p-10 rounded-[3.5rem] bg-[#0c0c0e]/60 border-rose-500/20 shadow-2xl backdrop-blur-3xl">
+        <div className="hidden xl:block absolute top-[50%] right-[8%] rotate-[10deg] animate-float opacity-40" style={{ animationDelay: '1.5s' }}>
+          <div className="cyber-card p-10 rounded-[3.5rem] bg-[#0c0c0e]/80 border-rose-500/30 shadow-2xl backdrop-blur-3xl">
             <div className="flex items-center gap-6 mb-8 text-rose-500">
               <Zap size={32} fill="currentColor" />
               <p className="text-4xl font-black uppercase italic">Live</p>
             </div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">AI Engine Ready</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-white/60">AI Ready</p>
           </div>
         </div>
       </section>
@@ -128,16 +128,16 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       </section>
 
       {/* How it Works - Simplified */}
-      <section id="how-it-works" className="relative py-56 bg-black">
+      <section id="how-it-works" className="relative py-32 bg-black">
         <div className="max-w-7xl mx-auto px-12 text-center">
-          <div className="inline-flex items-center gap-4 text-indigo-400/30 uppercase text-[10px] font-black tracking-[0.5em] mb-12">
-            <div className="w-8 h-px bg-indigo-500/30"></div>
-            Step-by-Step Growth
-            <div className="w-8 h-px bg-indigo-500/30"></div>
+          <div className="inline-flex items-center gap-4 text-indigo-400/40 uppercase text-xs font-bold tracking-wider mb-8">
+            <div className="w-12 h-px bg-indigo-500/30"></div>
+            How It Works
+            <div className="w-12 h-px bg-indigo-500/30"></div>
           </div>
-          <h2 className="text-5xl md:text-8xl font-black text-white mb-24 tracking-tighter uppercase italic leading-none">How It <span className="text-indigo-600">Works</span></h2>
+          <h2 className="text-5xl md:text-7xl font-black text-white mb-16 tracking-tighter uppercase italic leading-none">How It <span className="text-indigo-600">Works</span></h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20">
             <StepCard num="01" title="Find Trends" desc="We find what's going viral in your niche right now." icon={<Search size={40} />} color="bg-indigo-600" />
             <StepCard num="02" title="AI Writes" desc="AI creates your posts, captions, and video scripts instantly." icon={<Zap size={40} />} color="bg-purple-600" />
             <StepCard num="03" title="Post It" desc="Share to all your social apps with one click." icon={<Globe size={40} />} color="bg-emerald-600" />
@@ -205,25 +205,29 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       </section>
 
       {/* Footer */}
-      <footer className="py-32 bg-black border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-16">
-          <div className="flex flex-col items-center md:items-start">
-            <div className="flex items-center space-x-4 mb-6 grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-              <div className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-xl">
-                <TrendingUp size={20} strokeWidth={3} />
+      <footer className="py-20 bg-[#0c0c0e] border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-12">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-12 mb-12">
+            <div className="flex flex-col items-center md:items-start">
+              <div className="flex items-center space-x-4 mb-4 hover:scale-105 transition-transform cursor-pointer">
+                <div className="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center shadow-xl">
+                  <TrendingUp size={24} strokeWidth={3} />
+                </div>
+                <span className="text-2xl font-black tracking-widest uppercase text-white">Virality</span>
               </div>
-              <span className="text-xl font-black tracking-widest uppercase text-white">Virality</span>
+              <p className="text-xs font-bold text-white/40 uppercase tracking-wider text-center md:text-left">Powered by AI</p>
             </div>
-            <p className="text-[10px] font-black text-white/10 uppercase tracking-[0.5em] text-center md:text-left">Powered by Archive-0 Engineering Systems</p>
+
+            <div className="flex flex-wrap justify-center gap-8">
+              {['About', 'Security', 'Privacy', 'Contact'].map(l => (
+                <a key={l} href="#" className="text-sm font-bold uppercase tracking-wider text-white/60 hover:text-white transition-colors">{l}</a>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-12">
-            {['About', 'Security', 'Privacy', 'Contact'].map(l => (
-              <a key={l} href="#" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors">{l}</a>
-            ))}
+          <div className="pt-8 border-t border-white/10 text-center">
+            <p className="text-sm font-bold text-white/50">© 2026 Virality Studio. All Rights Reserved.</p>
           </div>
-
-          <p className="text-[10px] font-black text-white/10 uppercase tracking-widest italic">© 2026 Virality Studio. All Rights Reserved.</p>
         </div>
       </footer>
     </div>
