@@ -72,27 +72,27 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-300">Powered by Gemini 2.0 Flash AI</span>
           </div>
 
-          <h1 className="text-7xl md:text-[140px] font-black tracking-tighter leading-[0.85] mb-16 uppercase text-gradient-indigo italic">
-            Get More <br />
-            <span className="text-white">Views</span> <br />
-            <span className="text-indigo-400">Fast.</span>
+          <h1 className="text-7xl md:text-[140px] font-black tracking-tighter leading-[0.85] mb-16 uppercase italic">
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Amplify</span> <br />
+            <span className="text-white">Your Reach</span> <br />
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Instantly</span>
           </h1>
 
-          <p className="max-w-3xl mx-auto text-xl md:text-3xl text-white/40 mb-20 leading-relaxed font-medium italic">
-            "AI writes your posts. You pick the best ones. Post to all your social apps at once."
+          <p className="max-w-3xl mx-auto text-xl md:text-3xl text-white/50 mb-20 leading-relaxed font-medium">
+            Harness AI to craft compelling content. Select your favorites. Distribute across all platforms simultaneously.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full sm:w-auto px-16 py-8 bg-indigo-600 text-white rounded-[2.5rem] text-xl font-black shadow-[0_20px_60px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-5 uppercase tracking-widest"
+              className="group w-full sm:w-auto px-16 py-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-[2.5rem] text-xl font-black shadow-[0_20px_60px_rgba(79,70,229,0.4)] hover:shadow-[0_20px_80px_rgba(79,70,229,0.6)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-5 uppercase tracking-widest"
             >
-              {loading ? 'Initializing...' : 'Get Started Free'}
+              {loading ? 'Initializing...' : 'Start Creating Free'}
               <Rocket size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
-            <button className="w-full sm:w-auto px-16 py-8 bg-white/5 text-white border border-white/10 rounded-[2.5rem] text-xl font-black hover:bg-white/10 transition-all flex items-center justify-center gap-5 backdrop-blur-xl uppercase tracking-widest italic group">
-              View Strategy
+            <button className="w-full sm:w-auto px-16 py-8 bg-white/[0.03] text-white border border-white/10 rounded-[2.5rem] text-xl font-black hover:bg-white/[0.08] hover:border-white/20 transition-all flex items-center justify-center gap-5 backdrop-blur-xl uppercase tracking-widest group">
+              Explore Features
               <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -138,9 +138,9 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
           <h2 className="text-5xl md:text-7xl font-black text-white mb-16 tracking-tighter uppercase italic leading-none">How It <span className="text-indigo-600">Works</span></h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20">
-            <StepCard num="01" title="Find Trends" desc="We find what's going viral in your niche right now." icon={<Search size={40} />} color="bg-indigo-600" />
-            <StepCard num="02" title="AI Writes" desc="AI creates your posts, captions, and video scripts instantly." icon={<Zap size={40} />} color="bg-purple-600" />
-            <StepCard num="03" title="Post It" desc="Share to all your social apps with one click." icon={<Globe size={40} />} color="bg-emerald-600" />
+            <StepCard num="01" title="Discover Trends" desc="Identify what's resonating with your audience right now." icon={<Search size={40} />} color="bg-indigo-600" />
+            <StepCard num="02" title="AI Creation" desc="Generate polished posts, captions, and scripts instantly." icon={<Zap size={40} />} color="bg-purple-600" />
+            <StepCard num="03" title="Multi-Platform" desc="Publish to all your channels with a single action." icon={<Globe size={40} />} color="bg-emerald-600" />
           </div>
         </div>
       </section>
@@ -150,9 +150,9 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         <div className="max-w-7xl mx-auto px-12">
           <div className="flex flex-col lg:flex-row items-center gap-32 mb-40">
             <div className="flex-1 text-center lg:text-left">
-              <h2 className="text-6xl md:text-8xl font-black mb-12 tracking-tighter uppercase italic leading-[0.85]">For Anyone Who <br /> Wants <span className="text-indigo-400">Views.</span></h2>
-              <p className="text-white/40 text-2xl font-medium leading-relaxed italic max-w-2xl mx-auto lg:mx-0">
-                "Stop guessing what to post. Let AI create content that people want to share."
+              <h2 className="text-6xl md:text-8xl font-black mb-12 tracking-tighter uppercase italic leading-[0.85]">Built For <br /> Modern <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Creators</span></h2>
+              <p className="text-white/50 text-2xl font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                Stop second-guessing your content strategy. Let AI generate engaging posts that resonate with your audience.
               </p>
 
               <div className="mt-16 flex flex-wrap justify-center lg:justify-start gap-4">
