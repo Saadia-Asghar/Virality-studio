@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  FlaskConical,
   Sparkles,
   Instagram,
   Linkedin,
@@ -12,31 +11,33 @@ import {
   Copy,
   Zap,
   CheckCircle2,
-  Send,
-  Target,
-  Terminal,
-  Clock,
-  Youtube,
   Rocket,
-  Loader2
+  Loader2,
+  Terminal,
+  Target,
+  Lock
 } from 'lucide-react';
 import { generatePostFromIdea } from '../services/geminiService';
 import { postToPlatform, schedulePost } from '../services/platformService';
 import { Platform } from '../types';
 import { useAuth } from '../contexts/AuthContext';
+import SubscriptionModal from './SubscriptionModal';
 
 interface ContentGeneratorProps {
   initialIdea?: string;
 }
 
+const FREE_TRIAL_LIMIT = 3;
+
 const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' }) => {
-  const { user } = useAuth();
+  const { user, userData, updateUserData } = useAuth();
   const [idea, setIdea] = useState(initialIdea);
   const [platforms, setPlatforms] = useState<Platform[]>([Platform.INSTAGRAM, Platform.TIKTOK]);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionStatus, setActionStatus] = useState<Record<string, 'idle' | 'loading' | 'success'>>({});
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   useEffect(() => {
     if (initialIdea) {
@@ -45,7 +46,14 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
   }, [initialIdea]);
 
   const handleGenerate = async () => {
-    if (!idea) return;
+    if (!idea || !userData) return;
+
+    // Check usage limits
+    if (userData.subscriptionStatus === 'trial' && userData.postCount >= FREE_TRIAL_LIMIT) {
+      setShowSubscriptionModal(true);
+      return;
+    }
+
     setLoading(true);
     try {
       const adaptations: any = {};
@@ -53,8 +61,13 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
         adaptations[p] = await generatePostFromIdea({ topic: idea }, p);
       }
       setResults(adaptations);
+
+      // Increment Usage Count
+      await updateUserData({ postCount: (userData.postCount || 0) + 1 });
+
     } catch (e) {
       console.error(e);
+      alert("Error generating content. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -98,17 +111,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
     }
   };
 
-  if (!localStorage.getItem('virality_gemini_api_key')) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in slide-in-from-bottom-4">
-        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-6 border border-white/10 shadow-2xl">
-          <Terminal className="text-white/20 w-10 h-10" />
-        </div>
-        <h2 className="text-3xl font-black text-white mb-2 tracking-tight uppercase">AI Key Needed</h2>
-        <p className="text-white/40 max-w-md font-medium text-sm leading-relaxed">Please add your Gemini AI Key in Settings to start writing posts.</p>
-      </div>
-    );
-  }
+  if (!userData) return null;
 
   return (
     <div className="max-w-6xl mx-auto space-y-12 pb-20 animate-in fade-in duration-1000">
@@ -121,9 +124,23 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
             <span>AI Content Factory</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-tight uppercase text-gradient">Make Viral Posts</h2>
-          <p className="text-white/40 mb-12 font-medium leading-relaxed italic">
+          <p className="text-white/40 mb-8 font-medium leading-relaxed italic">
             "Just type your idea below. Google Gemini AI will write everything for you. Then, post directly to your apps with one click."
           </p>
+
+          {/* Trial Status Indicator */}
+          {userData.subscriptionStatus === 'trial' && (
+            <div className="mb-8 inline-flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/10">
+              <div className="flex gap-1.5">
+                {[...Array(FREE_TRIAL_LIMIT)].map((_, i) => (
+                  <div key={i} className={`w-8 h-2 rounded-full transition-all ${i < (userData.postCount || 0) ? 'bg-indigo-500' : 'bg-white/20'}`}></div>
+                ))}
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-white/60 ml-2">
+                {FREE_TRIAL_LIMIT - (userData.postCount || 0)} Free Gens Left
+              </span>
+            </div>
+          )}
 
           <div className="relative mb-10 group">
             <textarea
@@ -154,15 +171,24 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
             })}
           </div>
 
-          <button
-            onClick={handleGenerate}
-            disabled={loading || !idea}
-            className="group relative px-14 py-6 bg-indigo-600 text-white rounded-[2rem] font-black text-[11px] uppercase tracking-widest hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_40px_rgba(79,70,229,0.3)] flex items-center justify-center gap-4 mx-auto"
-          >
-            {loading ? 'AI is Writing...' : 'Write My Posts'}
-            {!loading && <Zap className="w-5 h-5 fill-current transition-transform group-hover:scale-110" />}
-            {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-          </button>
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={handleGenerate}
+              disabled={loading || !idea}
+              className="group relative px-14 py-6 bg-indigo-600 text-white rounded-[2rem] font-black text-[11px] uppercase tracking-widest hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_40px_rgba(79,70,229,0.3)] flex items-center justify-center gap-4 mx-auto"
+            >
+              {loading ? 'AI is Writing...' : 'Write My Posts'}
+              {!loading && <Zap className="w-5 h-5 fill-current transition-transform group-hover:scale-110" />}
+              {loading && <Loader2 className="w-5 h-5 animate-spin" />}
+            </button>
+
+            {userData.subscriptionStatus === 'trial' && userData.postCount >= FREE_TRIAL_LIMIT && (
+              <button onClick={() => setShowSubscriptionModal(true)} className="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-white transition-colors flex items-center gap-2">
+                <Lock size={12} />
+                Unlock Unlimited Access
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -273,6 +299,8 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({ initialIdea = '' })
           })}
         </div>
       )}
+
+      <SubscriptionModal isOpen={showSubscriptionModal} onClose={() => setShowSubscriptionModal(false)} />
     </div>
   );
 };

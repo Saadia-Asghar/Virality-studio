@@ -2,13 +2,24 @@
 import { GoogleGenAI } from "@google/genai";
 import { Platform } from "../types";
 
+// DEVELOPER: Replace this with your actual Gemini API Key
+export const DEVELOPER_GEMINI_API_KEY = "REPLACE_WITH_YOUR_KEY";
+
 const getApiKey = () => {
+  // Priority: 1. Developer Hardcoded Key, 2. Local Storage (Legacy), 3. Env Var
+  if (DEVELOPER_GEMINI_API_KEY && DEVELOPER_GEMINI_API_KEY !== "REPLACE_WITH_YOUR_KEY") {
+    return DEVELOPER_GEMINI_API_KEY;
+  }
+
   //@ts-ignore
   return localStorage.getItem('virality_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '';
 };
 
 const getAI = () => {
   const apiKey = getApiKey();
+  if (!apiKey) {
+    console.warn("No Gemini API Key found. Content generation will fail.");
+  }
   return new GoogleGenAI({ apiKey });
 };
 
@@ -111,6 +122,7 @@ export const reviewExternalPost = async (content: string, platform: string) => {
 };
 
 export const generateImage = async (prompt: string, aspectRatio: string = "1:1") => {
+  // Mock image generation for now, or connect to an actual image gen API if you have one
   const keywords = prompt.split(' ').slice(0, 3).join(',');
   return `https://images.unsplash.com/photo-1620336655174-32585934524c?auto=format&fit=crop&w=800&q=80&sig=${Math.random()}`;
 };

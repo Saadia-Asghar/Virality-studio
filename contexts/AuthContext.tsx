@@ -10,6 +10,8 @@ import {
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
+export type SubscriptionPlan = 'trial' | 'monthly' | 'yearly';
+
 interface UserData {
     id: string;
     name: string;
@@ -19,6 +21,9 @@ interface UserData {
     connectedPlatforms: string[];
     niche?: string;
     onboardingComplete: boolean;
+    postCount: number;
+    subscriptionStatus: SubscriptionPlan;
+    trialStartDate: string;
 }
 
 interface AuthContextType {
@@ -54,7 +59,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         email: user.email || '',
                         avatar: user.photoURL || '',
                         connectedPlatforms: [],
-                        onboardingComplete: false
+                        onboardingComplete: false,
+                        postCount: 0,
+                        subscriptionStatus: 'trial',
+                        trialStartDate: new Date().toISOString()
                     };
                     await setDoc(userRef, newData);
                     setUserData(newData);
