@@ -10,7 +10,12 @@ import {
   BarChart3,
   Users,
   Settings as SettingsIcon,
-  ChevronRight
+  ChevronRight,
+  TrendingUp,
+  Box,
+  Calendar,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -20,20 +25,35 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'content', label: 'Content Lab', icon: FlaskConical },
-    { id: 'review', label: 'Post Reviewer', icon: Eye },
-    { id: 'trends', label: 'Viral Trends', icon: Flame },
-    { id: 'radar', label: 'Audience Radar', icon: Target },
-    { id: 'studio', label: 'Image Studio', icon: ImageIcon },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'team', label: 'Team', icon: Users },
-    { id: 'settings', label: 'Settings', icon: SettingsIcon },
+    { id: 'dashboard', label: 'Main Command', icon: LayoutDashboard },
+    { id: 'content', label: 'AI Post Lab', icon: Zap },
+    { id: 'calendar', label: 'Post Schedule', icon: Calendar },
+    { id: 'trends', label: 'Find Trends', icon: Flame },
+    { id: 'radar', label: 'Market Radar', icon: Target },
+    { id: 'review', label: 'Check My Post', icon: Eye },
+    { id: 'studio', label: 'AI Image Lab', icon: ImageIcon },
+    { id: 'analytics', label: 'Growth Stats', icon: BarChart3 },
+    { id: 'team', label: 'Team Work', icon: Users },
+    { id: 'settings', label: 'App Settings', icon: SettingsIcon },
   ];
 
   return (
-    <div className="w-72 bg-white h-full border-r border-gray-100 flex flex-col fixed left-0 top-0 pt-20 z-40 selection:bg-indigo-50 selection:text-indigo-600">
-      <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto custom-scrollbar">
+    <aside className="w-72 h-screen bg-[#050505] border-r border-white/5 fixed left-0 top-0 z-50 transition-all duration-500 overflow-y-auto no-scrollbar">
+      {/* App Logo */}
+      <div className="h-24 flex items-center px-10 mb-8 border-b border-white/5 bg-gradient-to-br from-[#0c0c0e] to-transparent sticky top-0 z-10 backdrop-blur-xl">
+        <div className="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center mr-4 shadow-[0_10px_30px_rgba(255,255,255,0.15)] group hover:scale-110 transition-transform cursor-pointer">
+          <TrendingUp size={24} />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-xl font-black text-white tracking-tighter uppercase leading-none">TRENDING</span>
+          <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest mt-1">v3.0 Gemini AI</span>
+        </div>
+      </div>
+
+      {/* Navigation Menu */}
+      <nav className="px-6 space-y-2 pb-32">
+        <p className="px-5 text-[9px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Operations Center</p>
+
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -41,34 +61,52 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`group w-full flex items-center justify-between px-4 py-3.5 text-[13px] font-black tracking-tight rounded-2xl transition-all duration-300 ${isActive
-                ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-200 translate-x-1'
-                : 'text-gray-400 hover:bg-gray-50 hover:text-gray-900'
+              className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-500 group relative ${isActive
+                ? 'bg-white text-black shadow-[0_20px_40px_rgba(0,0,0,0.5)] scale-[1.02]'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
                 }`}
             >
-              <div className="flex items-center">
-                <Icon className={`mr-4 w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
-                <span className="uppercase tracking-[0.05em]">{item.label}</span>
+              {isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-500 rounded-r-full"></div>
+              )}
+
+              <div className="flex items-center space-x-4">
+                <Icon size={18} className={`${isActive ? 'text-black' : 'group-hover:text-indigo-400 transition-colors duration-500'}`} />
+                <span className={`text-[11px] font-black uppercase tracking-widest ${isActive ? 'text-black' : ''}`}>
+                  {item.label}
+                </span>
               </div>
-              {isActive && <ChevronRight className="w-4 h-4 opacity-50" />}
+
+              {isActive ? (
+                <div className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div>
+              ) : (
+                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              )}
             </button>
           );
         })}
       </nav>
 
-      <div className="p-6 border-t border-gray-50">
-        <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-[2rem] border border-gray-100 hover:border-indigo-100 transition-colors cursor-pointer group">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-indigo-100 group-hover:scale-105 transition-transform">JD</div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+      {/* Pro Upgrade Card */}
+      <div className="absolute bottom-10 left-6 right-6">
+        <div className="p-8 rounded-[2.5rem] bg-indigo-500/5 border border-indigo-500/10 relative overflow-hidden group shadow-2xl">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:bg-indigo-500/20 transition-all duration-700"></div>
+
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="p-2.5 bg-indigo-500 rounded-xl shadow-lg shadow-indigo-500/20">
+              <Sparkles size={16} className="text-white" />
+            </div>
+            <span className="text-[11px] font-black text-white uppercase tracking-widest leading-none">Studio Pro Access</span>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-black text-gray-900 truncate tracking-tight">John Doe</p>
-            <p className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">Enterprise Plan</p>
-          </div>
+
+          <p className="text-[10px] text-white/30 font-bold leading-relaxed mb-6 italic">"You are at 85% growth capacity. Unlock all AI nodes now."</p>
+
+          <button className="w-full py-4 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-indigo-500 hover:text-white transition-all shadow-xl active:scale-95">
+            Claim Pro Seat
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 

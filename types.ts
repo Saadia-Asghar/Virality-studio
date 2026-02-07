@@ -4,7 +4,8 @@ export enum Platform {
   TIKTOK = 'tiktok',
   LINKEDIN = 'linkedin',
   TWITTER = 'twitter',
-  FACEBOOK = 'facebook'
+  FACEBOOK = 'facebook',
+  YOUTUBE = 'youtube'
 }
 
 export interface UserProfile {
@@ -51,4 +52,16 @@ export interface Trend {
   urgency: 'hot' | 'rising' | 'steady';
   contentSuggestion: string;
   potentialReach: string;
+}
+
+export interface PostHistory {
+  id: string;
+  title: string;
+  platform: Platform;
+  likes: number;
+  comments: number;
+  shares: number;
+  reach: number;
+  growth: string;
+  date: string;
 }

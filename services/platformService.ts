@@ -83,3 +83,102 @@ export const seedMockData = async (userId: string) => {
         ]
     });
 };
+
+// --- NEW DIRECT DEPLOYMENT PROTOCOLS ---
+
+/**
+ * Directly posts content to a social platform node.
+ * In a real production app, this would call the respective platform APIs (Meta Graph API, TikTok for Business API, etc.)
+ */
+export const postToPlatform = async (userId: string, platform: Platform, content: any) => {
+    console.log(`[PROTOCOL] Direct Deployment Initiated for ${platform}`);
+
+    // Simulate API network latency
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
+    const postRecord = {
+        userId,
+        platform,
+        content,
+        deployedAt: new Date().toISOString(),
+        status: 'published',
+        reach: 0,
+        engagement: 0,
+        postId: `node_${Math.random().toString(36).substr(2, 9)}`
+    };
+
+    // Record the deployment in our database
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+        postHistory: arrayUnion(postRecord)
+    });
+
+    return postRecord;
+};
+
+/**
+ * Schedules content for future deployment.
+ */
+export const schedulePost = async (userId: string, platform: Platform, content: any, scheduleDate: string) => {
+    console.log(`[PROTOCOL] Scheduling Node established for ${platform} at ${scheduleDate}`);
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const scheduleRecord = {
+        userId,
+        platform,
+        content,
+        scheduledAt: scheduleDate,
+        status: 'scheduled',
+        nodeId: `sched_${Math.random().toString(36).substr(2, 9)}`
+    };
+
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+        scheduledNodes: arrayUnion(scheduleRecord)
+    });
+
+    return scheduleRecord;
+};
+
+/**
+ * Fetches detailed performance metrics for a specific competitor.
+ */
+export const fetchCompetitorDetails = async (username: string, platform: Platform) => {
+    //@ts-ignore
+    const apiKey = localStorage.getItem('virality_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) throw new Error("API Key missing");
+
+    const ai = new GoogleGenAI({ apiKey });
+
+    const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash',
+        contents: [{
+            role: 'user',
+            parts: [{
+                text: `Analyze the performance of the social media account "@${username}" on ${platform}. 
+                Provide:
+                1. Estimated follower count
+                2. Engagement rate (percentage)
+                3. Average views per post
+                4. Primary content pillar
+                5. Top 3 hashtags they use
+                6. A viral review score (1-100) based on their latest patterns.
+                
+                Format the response as a JSON object with keys: name, followers, engagementRate, avgViews, contentPillar, topHashtags (array), viralScore.`
+            }]
+        }],
+        config: {
+            responseMimeType: "application/json"
+        }
+    });
+
+    try {
+        //@ts-ignore
+        const data = JSON.parse(response.text);
+        return { ...data, platform };
+    } catch (e) {
+        console.error("Failed to parse competitor details", e);
+        return null;
+    }
+};

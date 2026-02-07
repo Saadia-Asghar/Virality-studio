@@ -13,7 +13,9 @@ import AnalyticsHub from './components/AnalyticsHub';
 import TeamCommand from './components/TeamCommand';
 import CompetitorRadar from './components/CompetitorRadar';
 import GuideModal from './components/GuideModal';
-import { Sparkles, Terminal, Info } from 'lucide-react';
+import ContentCalendar from './components/ContentCalendar';
+import HookLibrary from './components/HookLibrary';
+import { Sparkles, Terminal, Info, Zap, Loader2 } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 
 const App: React.FC = () => {
@@ -38,10 +40,15 @@ const App: React.FC = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">Neural Link Initializing...</p>
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Zap size={20} className="text-indigo-400 animate-pulse" />
+            </div>
+          </div>
+          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">Initializing Neural Link...</p>
         </div>
       </div>
     );
@@ -57,6 +64,10 @@ const App: React.FC = () => {
         return <Dashboard onSelectIdea={handleSelectIdea} setActiveTab={setActiveTab} />;
       case 'content':
         return <ContentGenerator initialIdea={pendingIdea || ''} />;
+      case 'calendar':
+        return <ContentCalendar />;
+      case 'hooks':
+        return <HookLibrary />;
       case 'review':
         return <ExtensionReview />;
       case 'studio':
@@ -77,50 +88,77 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-indigo-50 selection:text-indigo-600">
-      <Header />
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
+      {/* Dynamic Background Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div className="nebula-glow top-[-10%] left-[-5%] bg-indigo-600/10"></div>
+        <div className="nebula-glow bottom-[-10%] right-[-5%] bg-purple-600/10" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+      </div>
+
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="ml-72 pt-28 px-12 pb-20 transition-all duration-300">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-14 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-wrap break-all">
-            <div>
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="bg-indigo-600/10 p-1.5 rounded-lg border border-indigo-600/20">
-                  <Terminal size={14} className="text-indigo-600" />
+
+      <div className="ml-72 flex flex-col min-h-screen transition-all duration-500">
+        <Header />
+
+        <main className="flex-grow pt-32 px-12 pb-20">
+          <div className="max-w-7xl mx-auto">
+            {/* Global Context Bar */}
+            <div className="mb-14 flex flex-col md:flex-row justify-between items-center bg-white/2 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
+              <div className="flex items-center gap-8 mb-4 md:mb-0">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-3 mb-1">
+                    <Terminal size={14} className="text-indigo-400" />
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">Neural Node Connection</span>
+                  </div>
+                  <span className="text-sm font-black text-white uppercase tracking-widest">{userData?.email || 'Encrypted.User'}</span>
                 </div>
-                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.3em]">
-                  {userData?.email ? `Node: ${userData.email}` : 'Encrypted Session'}
-                </p>
+                <div className="h-10 w-px bg-white/5 hidden sm:block"></div>
+                <div className="flex flex-col hidden sm:flex">
+                  <div className="flex items-center gap-3 mb-1">
+                    <Sparkles size={14} className="text-amber-400" />
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">AI Status</span>
+                  </div>
+                  <span className="text-sm font-black text-emerald-400 uppercase tracking-widest">Active & Ready</span>
+                </div>
               </div>
-              <h1 className="text-5xl font-black text-gray-900 tracking-tighter uppercase">{activeTab.replace('-', ' ')}</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setIsGuideOpen(true)}
-                className="p-4 bg-gray-50 text-gray-400 hover:text-indigo-600 rounded-2xl transition-all group"
-                title="Protocol Guide"
-              >
-                <Info size={20} className="group-hover:scale-110 transition-transform" />
-              </button>
-              {activeTab !== 'content' && (
+
+              <div className="flex items-center gap-4">
                 <button
-                  onClick={() => {
-                    setPendingIdea(null);
-                    setActiveTab('content');
-                  }}
-                  className="bg-gray-900 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-gray-200 hover:bg-indigo-600 hover:-translate-y-1 transition-all flex items-center gap-3 active:scale-95"
+                  onClick={() => setIsGuideOpen(true)}
+                  className="p-4 bg-white/5 text-white/40 hover:text-indigo-400 rounded-2xl border border-white/5 hover:border-indigo-500/30 transition-all shadow-xl group"
+                  title="Protocol Guide"
                 >
-                  <Sparkles size={16} />
-                  Rapid Protocol
+                  <Info size={20} className="group-hover:scale-110 transition-transform" />
                 </button>
-              )}
+
+                {activeTab !== 'content' && (
+                  <button
+                    onClick={() => {
+                      setPendingIdea(null);
+                      setActiveTab('content');
+                    }}
+                    className="px-10 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-2xl active:scale-95 flex items-center gap-3"
+                  >
+                    <Zap size={16} />
+                    Rapid Post
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
+              {renderContent()}
             </div>
           </div>
-          <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
-            {renderContent()}
-          </div>
-        </div>
-      </main>
+        </main>
+
+        <footer className="px-12 py-10 border-t border-white/5 text-center">
+          <p className="text-[10px] font-black text-white/10 uppercase tracking-[0.5em]">Trending Beta v3.0 // Powered by Gemini 2.0 // © 2026 Archive-0</p>
+        </footer>
+      </div>
+
       <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
     </div>
   );

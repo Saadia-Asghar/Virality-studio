@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Search, Flame, Target, Rocket, Lightbulb, TrendingUp, ArrowRight } from 'lucide-react';
+import { Search, Flame, Target, Rocket, Lightbulb, TrendingUp, ArrowRight, Zap, Loader2, Globe } from 'lucide-react';
 import { fetchViralTrends } from '../services/geminiService';
 
 interface TrendsExplorerProps {
@@ -31,79 +31,89 @@ const TrendsExplorer: React.FC<TrendsExplorerProps> = ({ onSelectIdea }) => {
   if (!localStorage.getItem('virality_gemini_api_key')) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in slide-in-from-bottom-4">
-        <div className="w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center mb-6 border border-gray-100 shadow-sm">
-          <Flame className="text-gray-300 w-10 h-10" />
+        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-6 border border-white/10 shadow-2xl">
+          <Flame className="text-white/20 w-10 h-10" />
         </div>
-        <h2 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">Trend Radar Offline</h2>
-        <p className="text-gray-500 max-w-md font-medium text-sm leading-relaxed">System requires an active Gemini API Key to establish a secure link with live platform trend data.</p>
+        <h2 className="text-3xl font-black text-white mb-2 tracking-tight uppercase">Radar Offline</h2>
+        <p className="text-white/40 max-w-md font-medium text-sm leading-relaxed">System requires Google Gemini AI Key to find live social media trends.</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700">
-      <div className="bg-[#0A0A0A] p-12 rounded-[3.5rem] text-white relative overflow-hidden border border-white/5 shadow-2xl group">
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      {/* Search Header */}
+      <div className="relative p-12 rounded-[3.5rem] border border-white/5 overflow-hidden group shadow-2xl bg-gradient-to-br from-[#0c0c0e] to-black">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] -z-0 opacity-50 group-hover:opacity-80 transition-opacity"></div>
         <div className="relative z-10">
-          <div className="inline-flex items-center space-x-2 text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] mb-6">
-            <Target className="w-4 h-4" />
-            <span>Neural Scanning Enabled</span>
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-500/10 rounded-full text-[10px] font-black tracking-[0.3em] uppercase mb-8 border border-indigo-500/20 text-indigo-400 font-sans">
+            <Globe className="w-3.5 h-3.5" />
+            <span>Scanning Viral Signals</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">Intercept Viral Shifts</h2>
-          <p className="text-white/40 mb-10 max-w-lg font-medium leading-relaxed">
-            Scanning live platform metadata to isolate hooks and acoustic patterns currently achieving exponential distribution.
+          <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter leading-[0.9] text-gradient uppercase">
+            Find <span className="text-indigo-400">Viral</span> Trends
+          </h2>
+          <p className="text-white/40 text-lg font-medium leading-relaxed italic mb-10 max-w-xl">
+            "Enter your niche below. Gemini AI will scan the web to find exactly what topics are trending right now."
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-xl">
+
+          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5" />
               <input
                 type="text"
                 value={niche}
                 onChange={(e) => setNiche(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white text-sm font-bold placeholder-white/20 outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
-                placeholder="Define niche scope..."
+                className="w-full h-16 bg-white/5 border border-white/5 rounded-2xl pl-16 pr-6 text-white text-[11px] font-black uppercase tracking-widest placeholder-white/20 outline-none focus:border-indigo-500/50 transition-all shadow-2xl"
+                placeholder="Ex: Luxury Watches, Keto Diet..."
               />
             </div>
             <button
               onClick={handleSearch}
-              className="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-indigo-700 active:scale-95 transition-all shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-3"
+              disabled={loading}
+              className="px-10 py-5 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-4"
             >
-              Scan Data
-              <Rocket className="w-4 h-4" />
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Rocket size={18} />}
+              {loading ? 'Scanning...' : 'Scan Now'}
             </button>
           </div>
         </div>
-        <div className="absolute top-[-30%] right-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none group-hover:bg-indigo-600/20 transition-all duration-700"></div>
       </div>
 
+      {/* Trends Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {loading ? (
-          [1, 2, 3, 4].map(i => <div key={i} className="h-56 bg-gray-50 animate-pulse rounded-[2.5rem] border border-gray-100"></div>)
+          [1, 2, 3, 4].map(i => <div key={i} className="h-64 bg-white/5 animate-pulse rounded-[3rem] border border-white/5"></div>)
         ) : (
           trends.map((trend, i) => (
-            <div key={i} className="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-indigo-500/20 transition-all duration-500 flex flex-col relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gray-50 rounded-bl-[3rem] -z-0 group-hover:bg-indigo-50 transition-colors"></div>
+            <div key={i} className="group cyber-card p-10 rounded-[3rem] bg-[#0c0c0e] flex flex-col relative overflow-hidden transition-all duration-700">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-bl-[4rem] group-hover:bg-indigo-500/10 transition-all"></div>
+
               <div className="relative z-10 h-full flex flex-col">
-                <div className="flex justify-between items-start mb-6">
-                  <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${trend.urgency === 'hot' ? 'bg-rose-50 text-rose-600 border-rose-100' : 'bg-indigo-50 text-indigo-600 border-indigo-100'}`}>
+                <div className="flex justify-between items-start mb-8">
+                  <span className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${trend.urgency === 'hot' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20 animate-pulse' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'}`}>
                     {trend.urgency} Phase
                   </span>
-                  <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                    <TrendingUp size={14} className="text-emerald-500" />
+                  <div className="flex items-center gap-2 text-[10px] font-black text-white/30 uppercase tracking-widest">
+                    <TrendingUp size={14} className="text-emerald-400" />
                     <span>Relevance: {trend.relevance}%</span>
                   </div>
                 </div>
-                <h3 className="text-xl font-black text-gray-900 mb-4 tracking-tight leading-tight">{trend.name}</h3>
-                <p className="text-xs text-gray-500 mb-8 flex-grow leading-relaxed font-semibold">{trend.suggestion}</p>
-                <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
-                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                    EST. REACH: <span className="text-indigo-600 ml-1">{trend.reach}</span>
+
+                <h3 className="text-2xl font-black text-white mb-6 tracking-tight italic uppercase leading-tight group-hover:text-indigo-400 transition-colors">{trend.name}</h3>
+                <p className="text-xs text-white/40 mb-10 flex-grow leading-relaxed font-bold italic">"{trend.suggestion}"</p>
+
+                <div className="flex items-center justify-between mt-auto pt-8 border-t border-white/5">
+                  <div className="flex items-center gap-3">
+                    <Zap size={14} className="text-indigo-400" />
+                    <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Estimated Reach: <span className="text-white/60 ml-1">{trend.reach}</span></span>
                   </div>
                   <button
                     onClick={() => onSelectIdea(trend.name)}
-                    className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-900 hover:text-indigo-600 transition-colors group-hover:translate-x-1"
+                    className="flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-white hover:text-indigo-400 transition-all group-hover:translate-x-2"
                   >
-                    Deploy Lab
-                    <ArrowRight size={14} />
+                    Use Trend
+                    <ArrowRight size={16} />
                   </button>
                 </div>
               </div>
@@ -113,18 +123,18 @@ const TrendsExplorer: React.FC<TrendsExplorerProps> = ({ onSelectIdea }) => {
       </div>
 
       {!loading && (
-        <div className="bg-gray-50 p-10 rounded-[3rem] border border-gray-100 flex items-center space-x-10 relative overflow-hidden">
-          <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-sm flex-shrink-0">
-            <Lightbulb className="text-indigo-600 w-10 h-10" />
+        <div className="relative p-12 rounded-[3.5rem] bg-indigo-500/5 border border-indigo-500/10 flex flex-col md:flex-row items-center gap-10 overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
+            <Globe size={400} className="translate-x-[-20%] translate-y-[-20%]" />
           </div>
-          <div className="relative z-10">
-            <h4 className="text-lg font-black text-gray-900 tracking-tight mb-2 uppercase tracking-[0.05em]">Intelligence: Micro-Trend Windows</h4>
-            <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-2xl">
-              Algorithms for <span className="text-gray-900 font-bold">"{niche}"</span> typically favor high-contrast visual hooks during 18:00 - 21:00 UTC. Standardize your export resolution to 1080x1920 for maximum bitrate retention on TikTok servers.
+          <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10 shadow-2xl flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform duration-500">
+            <Lightbulb className="text-indigo-400 w-10 h-10" />
+          </div>
+          <div className="relative z-10 text-center md:text-left">
+            <h4 className="text-xl font-black text-white tracking-tight mb-3 uppercase tracking-[0.1em]">AI Tip: Posting Windows</h4>
+            <p className="text-sm text-white/40 font-medium leading-relaxed max-w-2xl italic">
+              "For <span className="text-indigo-400 font-bold">"{niche}"</span>, users are most active between <span className="text-white">6:00 PM and 9:00 PM</span>. Try posting your content during this time for 40% more views."
             </p>
-          </div>
-          <div className="absolute right-[-2%] bottom-[-50%] text-[10rem] font-black text-gray-900/5 select-none pointer-events-none">
-            B-ROLL
           </div>
         </div>
       )}

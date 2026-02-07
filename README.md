@@ -8,10 +8,25 @@ Trending is a high-fidelity command center designed for the modern attention eco
 ## 🚀 Core Infrastructure
 
 - **Neural Seed Workflow**: One idea, infinite adaptations for Instagram, TikTok, and LinkedIn.
-- **Audience Radar**: Real-time competitor scanning and content gap forensics.
+- **Audience Radar**: Real-time competitor scanning, performance detail comparisons, and content gap forensics.
 - **Trends Explorer**: Signal interception for breakout audio and emergent topics.
 - **Post Reviewer**: AI-driven viral score auditing before deployment.
 - **Ecosystem Analytics**: Macro-scale audience dynamics and conversion tracking.
+
+## 👤 Target Audience (Who is it for?)
+- **Solopreneurs**: Individuals building a personal brand and needing consistent, high-quality content.
+- **Creators & Influencers**: Elite operators looking to dominate multiple platforms with minimal friction.
+- **Growth Hackers**: Data-driven marketers who want to intercept trends and force algorithm favoritism.
+- **Content Agencies**: Teams managing multiple client identities who require standardized, high-performance output.
+
+## 📱 Supported Platforms (Which apps?)
+Trending currently supports optimized signal synthesis for:
+- **Instagram** (Reels & Captions)
+- **TikTok** (Short-form logic & Trends)
+- **LinkedIn** (Authority scripts & Professional nodes)
+- **Twitter/X** (Contrarian threads & hooks)
+- **Facebook** (Community engagement protocols)
+- **YouTube** (Shorts & Long-form strategy)
 
 ## 🛠️ Deployment Protocol
 
